@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import premiumAlbumRouter from '../route/premium-album-router';
 
 dotenv.config();
 const app = express();
@@ -11,6 +12,9 @@ app.get('/', (req, res) => {
         }
     );
 });
+
+app.use(express.json());
+app.use("/", premiumAlbumRouter);
 
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
