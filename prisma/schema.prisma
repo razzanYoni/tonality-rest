@@ -10,3 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Admin {
+  user_id  Int    @id @default(autoincrement())
+  username String @unique @db.VarChar(50)
+  password String @db.VarChar(255)
+}
+
+model PremiumAlbum {
+  album_id       Int           @id @default(autoincrement())
+  album_name     String        @db.VarChar(255)
+  release_date   DateTime
+  genre          String        @db.VarChar(255)
+  artist         String        @db.VarChar(255)
+  cover_filename String        @db.VarChar(255)
+  songs          PremiumSong[]
+}
+
+model PremiumSong {
+  song_id        Int          @id @default(autoincrement())
+  album_id       Int
+  title          String       @db.VarChar(255)
+  artist         String       @db.VarChar(255)
+  song_number    Int
+  disc_number    Int?
+  duration       Int
+  audio_filename String       @db.VarChar(255)
+  PremiumAlbum   PremiumAlbum @relation(fields: [album_id], references: [album_id])
+}
