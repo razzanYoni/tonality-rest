@@ -2,7 +2,7 @@ import express from "express";
 import {
   createPremAlbum,
   deletePremAlbum,
-  getAllPremAlbum,
+  searchPremAlbum,
   updatePremAlbum,
 } from "../controllers/premium-album-controller";
 
@@ -12,7 +12,7 @@ const premiumAlbumRouter = express.Router();
 premiumAlbumRouter.post("/api/premium-album", createPremAlbum);
 
 // read
-premiumAlbumRouter.get("/api/premium-albums", getAllPremAlbum);
+premiumAlbumRouter.get("/api/premium-albums", searchPremAlbum);
 
 // update
 premiumAlbumRouter.patch("/api/premium-album/:premiumAlbumId", updatePremAlbum);
