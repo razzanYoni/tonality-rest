@@ -11,29 +11,35 @@ datasource db {
 }
 
 model Admin {
-  user_id  Int    @id @default(autoincrement())
+  userId   Int    @id @default(autoincrement()) @map("user_id")
   username String @unique @db.VarChar(50)
   password String @db.VarChar(255)
+
+  @@map("user")
 }
 
 model PremiumAlbum {
-  album_id       Int           @id @default(autoincrement())
-  album_name     String        @db.VarChar(255)
-  release_date   DateTime
-  genre          String        @db.VarChar(255)
-  artist         String        @db.VarChar(255)
-  cover_filename String        @db.VarChar(255)
-  songs          PremiumSong[]
+  albumId       Int           @id @default(autoincrement()) @map("album_id")
+  albumName     String        @map("album_name") @db.VarChar(255)
+  releaseDate   DateTime      @map("release_date") @db.Date
+  genre         String        @db.VarChar(255)
+  artist        String        @db.VarChar(255)
+  coverFilename String        @map("cover_filename") @db.VarChar(255)
+  songs         PremiumSong[]
+
+  @@map("premium_album")
 }
 
 model PremiumSong {
-  song_id        Int          @id @default(autoincrement())
-  album_id       Int
-  title          String       @db.VarChar(255)
-  artist         String       @db.VarChar(255)
-  song_number    Int
-  disc_number    Int?
-  duration       Int
-  audio_filename String       @db.VarChar(255)
-  PremiumAlbum   PremiumAlbum @relation(fields: [album_id], references: [album_id])
+  songId        Int          @id @default(autoincrement()) @map("song_id")
+  albumId       Int          @map("album_id")
+  title         String       @db.VarChar(255)
+  artist        String       @db.VarChar(255)
+  songNumber    Int          @map("song_number")
+  discNumber    Int?         @map("disc_number")
+  duration      Int
+  audioFilename String       @map("audio_filename") @db.VarChar(255)
+  PremiumAlbum  PremiumAlbum @relation(fields: [albumId], references: [albumId], onUpdate: Cascade, onDelete: Cascade)
+
+  @@map("premium_song")
 }
