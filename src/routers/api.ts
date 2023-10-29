@@ -1,5 +1,8 @@
 import express from "express";
+import premiumAlbumRouter from "./premium-album-router";
 
-const testRouter = express.Router();
+const apiRouter = express.Router();
 
-testRouter.get("/");
+apiRouter.use(premiumAlbumRouter);
+
+export default apiRouter;
