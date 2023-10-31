@@ -1,26 +1,17 @@
 import express from "express";
-import {
-  createPremAlbum,
-  deletePremAlbum,
-  searchPremAlbum,
-  updatePremAlbum,
-} from "../controllers/premium-album-controller";
+import * as PremiumAlbumController from "../controllers/premium-album-controller";
 
 const premiumAlbumRouter = express.Router();
 
-// create
-premiumAlbumRouter.post("/api/premium-album", createPremAlbum);
+premiumAlbumRouter.post("/api/premium-album", PremiumAlbumController.createPremiumAlbum);
 
-// read
-premiumAlbumRouter.get("/api/premium-albums", searchPremAlbum);
+premiumAlbumRouter.get("/api/premium-albums", PremiumAlbumController.searchPremiumAlbum);
 
-// update
-premiumAlbumRouter.patch("/api/premium-album/:premiumAlbumId", updatePremAlbum);
+premiumAlbumRouter.patch("/api/premium-album/:premiumAlbumId", PremiumAlbumController.updatePremiumAlbum);
 
-// delete
 premiumAlbumRouter.delete(
   "/api/premium-album/:premiumAlbumId",
-  deletePremAlbum,
+  PremiumAlbumController.deletePremiumAlbum,
 );
 
 export default premiumAlbumRouter;
