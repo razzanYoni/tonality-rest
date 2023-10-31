@@ -11,7 +11,7 @@ CREATE TABLE "user" (
 CREATE TABLE "premium_album" (
     "album_id" SERIAL NOT NULL,
     "album_name" VARCHAR(255) NOT NULL,
-    "release_date" TIMESTAMP(3) NOT NULL,
+    "release_date" DATE NOT NULL,
     "genre" VARCHAR(255) NOT NULL,
     "artist" VARCHAR(255) NOT NULL,
     "cover_filename" VARCHAR(255) NOT NULL,
@@ -25,8 +25,8 @@ CREATE TABLE "premium_song" (
     "album_id" INTEGER NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "artist" VARCHAR(255) NOT NULL,
-    "song_number" INTEGER NOT NULL,
-    "disc_number" INTEGER,
+    "song_number" SMALLINT NOT NULL,
+    "disc_number" SMALLINT,
     "duration" INTEGER NOT NULL,
     "audio_filename" VARCHAR(255) NOT NULL,
 

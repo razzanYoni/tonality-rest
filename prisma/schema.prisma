@@ -35,8 +35,8 @@ model PremiumSong {
   albumId       Int          @map("album_id")
   title         String       @db.VarChar(255)
   artist        String       @db.VarChar(255)
-  songNumber    Int          @map("song_number")
-  discNumber    Int?         @map("disc_number")
+  songNumber    Int          @map("song_number") @db.SmallInt
+  discNumber    Int?         @map("disc_number") @db.SmallInt
   duration      Int
   audioFilename String       @map("audio_filename") @db.VarChar(255)
   PremiumAlbum  PremiumAlbum @relation(fields: [albumId], references: [albumId], onUpdate: Cascade, onDelete: Cascade)
