@@ -1,35 +1,31 @@
-import { Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 import {
   createPremiumAlbum,
   deletePremiumAlbum,
-  getAllPremiumAlbum,
+  searchPremiumAlbum,
   updatePremiumAlbum,
 } from "../services/premium-album-service";
 
-export async function createPremAlbum(req: Request, res: Response) {
+export const createPremAlbum = async (req: Request, res: Response, next: NextFunction)=> {
   try {
     const data = req.body;
-    console.log(data);
-
-    const premiumAlbum = await createPremiumAlbum(data);
-    res.status(200).json(premiumAlbum);
+    const responseData = await createPremiumAlbum(data);
+    res.status(200).json({data: responseData});
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    next(error)
   }
 }
 
-export async function getAllPremAlbum(req: Request, res: Response) {
+export const searchPremAlbum = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const allPremiumAlbum = await getAllPremiumAlbum();
+    const allPremiumAlbum = await searchPremiumAlbum(req.body);
     res.status(200).json(allPremiumAlbum);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    next(error)
   }
 }
 
-export async function updatePremAlbum(req: Request, res: Response) {
+export const updatePremAlbum = async (req: Request, res: Response, next : NextFunction)=> {
   try {
     const premiumAlbumId = Number(req.params.premiumAlbumId);
     const data = req.body;
@@ -37,19 +33,17 @@ export async function updatePremAlbum(req: Request, res: Response) {
     const updatedPremiumAlbum = await updatePremiumAlbum(data, premiumAlbumId);
     res.status(200).json(updatedPremiumAlbum);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    next(error);
   }
 }
 
-export async function deletePremAlbum(req: Request, res: Response) {
+export const deletePremAlbum = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const premiumAlbumId = Number(req.params.premiumAlbumId);
 
     const deletedPremiumAlbum = await deletePremiumAlbum(premiumAlbumId);
     res.status(200).json(deletedPremiumAlbum);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    next(error);
   }
 }
