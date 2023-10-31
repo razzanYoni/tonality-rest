@@ -1,5 +1,6 @@
 import { PremiumAlbum, Prisma } from "@prisma/client";
 import prismaClient from "../cores/db";
+import ResponseError from "../errors/response-error";
 
 const createPremiumAlbum = async (
   data: Prisma.PremiumAlbumCreateInput,
@@ -69,6 +70,16 @@ const updatePremiumAlbum = async (
   inputData: Prisma.PremiumAlbumCreateInput,
   premiumAlbumId: number,
 ): Promise<PremiumAlbum> => {
+  const albumCount = await prismaClient.premiumAlbum.count({
+    where: {
+      albumId: premiumAlbumId,
+    }
+  });
+
+  if (albumCount !== 1) {
+    throw new ResponseError(404, "Album not found");
+  }
+
   return prismaClient.premiumAlbum.update({
     where: {
       albumId: premiumAlbumId,
@@ -77,7 +88,17 @@ const updatePremiumAlbum = async (
   });
 };
 
-const deletePremiumAlbum = (premiumAlbumId: number): Promise<PremiumAlbum> => {
+const deletePremiumAlbum = async (premiumAlbumId: number): Promise<PremiumAlbum> => {
+  const albumCount = await prismaClient.premiumAlbum.count({
+    where: {
+        albumId: premiumAlbumId,
+    }
+    });
+
+  if (albumCount !== 1) {
+    throw new ResponseError(404, "Album not found");
+  }
+
   return prismaClient.premiumAlbum.delete({
     where: {
       albumId: premiumAlbumId,
