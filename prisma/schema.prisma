@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
+model User {
   userId   Int    @id @default(autoincrement()) @map("user_id")
   username String @unique @db.VarChar(50)
   password String @db.VarChar(255)
