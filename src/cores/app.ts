@@ -1,11 +1,11 @@
-import express from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 import apiRouter from "../routers/api";
 
 dotenv.config();
 
-export const app = express();
-const port = process.env.EXPRESS_PORT;
+export const app: Express = express();
+const port: string | undefined = process.env.EXPRESS_PORT;
 
 app.use(express.json());
 app.use(apiRouter);
