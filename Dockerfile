@@ -10,4 +10,4 @@ COPY . .
 
 RUN npx prisma generate
 
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run build-start"]
