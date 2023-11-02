@@ -77,7 +77,7 @@ class StandardError {
         break;
 
       default:
-        this.title = "Unknown Error";
+        this.title = "Unknown error.";
         this.status = StatusCodes.INTERNAL_SERVER_ERROR;
     }
   }
