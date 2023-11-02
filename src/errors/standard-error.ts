@@ -6,10 +6,12 @@ enum ErrorType {
   WRONG_PASSWORD,
   PASSWORD_HASH_FAILURE,
   PASSWORD_VERIFICATION_FAILURE,
-  TOKEN_GENERATION_FAILURE,
-  TOKEN_MISSING,
-  TOKEN_EXPIRED,
-  TOKEN_NOT_ACTIVE,
+  ACCESS_TOKEN_GENERATION_FAILURE,
+  ACCESS_TOKEN_MISSING,
+  ACCESS_TOKEN_EXPIRED,
+  ACCESS_TOKEN_NOT_ACTIVE,
+  AUTHORIZATION_HEADER_NOT_SET,
+  FINGERPRINT_MISSING,
   ALBUM_NOT_FOUND,
   INVALID_API_KEY,
 }
@@ -46,23 +48,33 @@ class StandardError {
         this.status = StatusCodes.INTERNAL_SERVER_ERROR;
         break;
 
-      case ErrorType.TOKEN_GENERATION_FAILURE:
-        this.title = "Failed to generate token."
+      case ErrorType.ACCESS_TOKEN_GENERATION_FAILURE:
+        this.title = "Failed to generate access token."
         this.status = StatusCodes.INTERNAL_SERVER_ERROR;
         break;
 
-      case ErrorType.TOKEN_MISSING:
+      case ErrorType.ACCESS_TOKEN_MISSING:
         this.title = "Your access token is missing."
         this.status = StatusCodes.UNAUTHORIZED;
         break;
 
-      case ErrorType.TOKEN_EXPIRED:
+      case ErrorType.ACCESS_TOKEN_EXPIRED:
         this.title = "Your access token is expired."
         this.status = StatusCodes.UNAUTHORIZED;
         break;
 
-      case ErrorType.TOKEN_NOT_ACTIVE:
+      case ErrorType.ACCESS_TOKEN_NOT_ACTIVE:
         this.title = "Your access token is not active yet."
+        this.status = StatusCodes.UNAUTHORIZED;
+        break;
+
+      case ErrorType.AUTHORIZATION_HEADER_NOT_SET:
+        this.title = "Authorization header not set."
+        this.status = StatusCodes.UNAUTHORIZED;
+        break;
+
+      case ErrorType.FINGERPRINT_MISSING:
+        this.title = "Fingerprint is missing."
         this.status = StatusCodes.UNAUTHORIZED;
         break;
 

@@ -5,9 +5,13 @@ import { StandardError } from "../errors/standard-error";
 const generateResponse = (
   res: Response,
   status: StatusCodes,
-  data: any,
+  data?: any,
 ): void => {
-  res.status(status).json(data ? data : null);
+  if (!data) {
+    res.status(status);
+    return;
+  }
+  res.status(status).json(data);
 };
 
 const generateStandardErrorResponse = (
