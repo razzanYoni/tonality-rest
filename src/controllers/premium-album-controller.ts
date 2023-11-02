@@ -1,17 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import * as PremiumAlbumService from "../services/premium-album-service";
+import { generateResponse } from "../utils/response";
+import { StatusCodes } from "http-status-codes";
 
 const createPremiumAlbum = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<void> => {
   try {
     const data = req.body;
     const responseData = await PremiumAlbumService.createPremiumAlbum(data);
-    res.status(200).json({ data: responseData });
-  } catch (error) {
-    next(error);
+    generateResponse(res, StatusCodes.OK, responseData);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -19,14 +21,14 @@ const searchPremiumAlbum = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<void> => {
   try {
     const allPremiumAlbum = await PremiumAlbumService.searchPremiumAlbum(
       req.body,
     );
-    res.status(200).json(allPremiumAlbum);
-  } catch (error) {
-    next(error);
+    generateResponse(res, StatusCodes.OK, allPremiumAlbum);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -34,7 +36,7 @@ const updatePremiumAlbum = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<void> => {
   try {
     const premiumAlbumId = Number(req.params.premiumAlbumId);
     const data = req.body;
@@ -43,9 +45,9 @@ const updatePremiumAlbum = async (
       data,
       premiumAlbumId,
     );
-    res.status(200).json(updatedPremiumAlbum);
-  } catch (error) {
-    next(error);
+    generateResponse(res, StatusCodes.OK, updatedPremiumAlbum);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -53,15 +55,15 @@ const deletePremiumAlbum = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<void> => {
   try {
     const premiumAlbumId = Number(req.params.premiumAlbumId);
 
     const deletedPremiumAlbum =
       await PremiumAlbumService.deletePremiumAlbum(premiumAlbumId);
-    res.status(200).json(deletedPremiumAlbum);
-  } catch (error) {
-    next(error);
+    generateResponse(res, StatusCodes.OK, deletedPremiumAlbum);
+  } catch (err) {
+    next(err);
   }
 };
 
