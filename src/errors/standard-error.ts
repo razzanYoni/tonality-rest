@@ -13,6 +13,7 @@ enum ErrorType {
   AUTHORIZATION_HEADER_NOT_SET,
   FINGERPRINT_MISSING,
   ALBUM_NOT_FOUND,
+  INPUT_DATA_NOT_VALID,
   INVALID_API_KEY,
 }
 
@@ -81,6 +82,11 @@ class StandardError {
       case ErrorType.ALBUM_NOT_FOUND:
         this.title = "Album not found."
         this.status = StatusCodes.NOT_FOUND;
+        break;
+
+      case ErrorType.INPUT_DATA_NOT_VALID:
+        this.title = "Input data is not valid."
+        this.status = StatusCodes.BAD_REQUEST;
         break;
 
       case ErrorType.INVALID_API_KEY:
