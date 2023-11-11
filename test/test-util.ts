@@ -1,5 +1,9 @@
 import prismaClient from "../src/cores/db";
 
+export const deleteAllUserTest = async () => {
+    await prismaClient.user.deleteMany();
+}
+
 export const deleteAllPremiumAlbumTest = async () => {
     await prismaClient.premiumAlbum.deleteMany();
 }

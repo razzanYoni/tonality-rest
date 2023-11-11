@@ -8,7 +8,7 @@ const generateResponse = (
   data?: any,
 ): void => {
   if (!data) {
-    res.status(status);
+    res.status(status).json();
     return;
   }
   res.status(status).json(data);
