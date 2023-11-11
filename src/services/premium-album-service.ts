@@ -1,10 +1,14 @@
 import { PremiumAlbum, Prisma } from "@prisma/client";
 import prismaClient from "../cores/db";
 import { ErrorType, StandardError } from "../errors/standard-error";
+import {validate} from "../validation/validation";
+import {createPremiumAlbumSchema, searchPremiumAlbumSchema, deletePremiumAlbumSchema, updatePremiumAlbumSchema} from "../validation/premium-album-validation";
 
 const createPremiumAlbum = async (
   data: Prisma.PremiumAlbumCreateInput,
 ): Promise<PremiumAlbum> => {
+  validate(createPremiumAlbumSchema, data)
+
   return prismaClient.premiumAlbum.create({
     data: {
       albumName: data.albumName,
@@ -21,6 +25,8 @@ const searchPremiumAlbum = async (reqQuery: {
   page: number | undefined;
   searchQuery: string | undefined;
 }) => {
+  validate(searchPremiumAlbumSchema, reqQuery)
+
   const skip: number = ((reqQuery.page ?? 1) - 1) * (reqQuery.size ?? 10);
 
   const filters = [];
@@ -46,7 +52,7 @@ const searchPremiumAlbum = async (reqQuery: {
     where: {
       AND: filters,
     },
-    take: reqQuery.size,
+    take: reqQuery.size ?? 10,
     skip: skip,
   });
 
@@ -59,7 +65,7 @@ const searchPremiumAlbum = async (reqQuery: {
   return {
     data: albums,
     paging: {
-      page: reqQuery.page,
+      page: reqQuery.page ?? 1,
       totalAlbums: totalAlbums,
       totalPages: Math.ceil(totalAlbums / (reqQuery.size ?? 10)),
     },
@@ -70,6 +76,8 @@ const updatePremiumAlbum = async (
   inputData: Prisma.PremiumAlbumCreateInput,
   premiumAlbumId: number,
 ): Promise<PremiumAlbum> => {
+  validate(updatePremiumAlbumSchema, {premiumAlbumId, ...inputData})
+
   const albumCount = await prismaClient.premiumAlbum.count({
     where: {
       albumId: premiumAlbumId,
@@ -91,6 +99,8 @@ const updatePremiumAlbum = async (
 const deletePremiumAlbum = async (
   premiumAlbumId: number,
 ): Promise<PremiumAlbum> => {
+  validate(deletePremiumAlbumSchema, { premiumAlbumId })
+
   const albumCount = await prismaClient.premiumAlbum.count({
     where: {
       albumId: premiumAlbumId,
