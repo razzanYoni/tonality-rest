@@ -24,7 +24,11 @@ const searchPremiumAlbum = async (
 ): Promise<void> => {
   try {
     const allPremiumAlbum = await PremiumAlbumService.searchPremiumAlbum(
-      req.body,
+        {
+          size: req.query.size ? Number(req.query.size) : undefined,
+          page: req.query.page ? Number(req.query.page) : undefined,
+          searchQuery: req.query.searchQuery ? String(req.query.searchQuery) : undefined,
+        }
     );
     generateResponse(res, StatusCodes.OK, allPremiumAlbum);
   } catch (err) {
