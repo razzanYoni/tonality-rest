@@ -7,14 +7,14 @@ const subscriptionRouter: Router = express.Router();
 
 subscriptionRouter.post(
     "/api/subscription",
-    // verifyToken,
+    verifyToken,
     SubscriptionController.updateSubscription,
     handleStandardError,
 );
 
 subscriptionRouter.get(
     "/api/subscriptions",
-    // verifyToken,
+    verifyToken,
     SubscriptionController.searchSubscription,
     handleStandardError,
 );

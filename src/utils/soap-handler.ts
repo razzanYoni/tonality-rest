@@ -45,6 +45,7 @@ const soapRequest = async (
             headers: {
                 "Content-Type": "text/xml",
                 "SOAPAction": "#POST",
+                "X-API-Key": process.env.SOAP_API_KEY,
                 Accept: "*/*",
             },
     });
