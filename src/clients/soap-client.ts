@@ -9,7 +9,7 @@ const xmlOptions = {
 const xmlBuilder = new XMLBuilder(xmlOptions);
 const xmlParser = new XMLParser();
 
-const soapHandler = async (url : string, ws_url : string, function_name : string, data : object) : Promise<object> => {
+const soapClient = async (url : string, ws_url : string, function_name : string, data : object) : Promise<object> => {
     const responseData : string = await soapRequest(url, ws_url, function_name, data);
     return soapResponseDataParser(responseData);
 }
@@ -72,4 +72,4 @@ const soapResponseDataParser = (data : string) : object => {
     return parsedBody[Object.keys(parsedBody)[0]];
 }
 
-export { soapHandler }
+export { soapClient }

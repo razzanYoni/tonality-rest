@@ -1,4 +1,4 @@
-import {soapHandler} from "../utils/soap-handler";
+import {soapClient} from "../clients/soap-client";
 import SubscriptionStatus from "../type/subscription-status";
 import {validate} from "../validation/validation";
 import {searchSubscriptionSchema, updateSubscriptionSchema} from "../validation/subscription-validation";
@@ -13,7 +13,7 @@ const updateSubscription = async (
     },
 ): Promise<object> => {
     validate(updateSubscriptionSchema, data)
-    return soapHandler(url, ws_url, "updateSubscription", data)
+    return soapClient(url, ws_url, "updateSubscription", data)
 };
 
 const searchSubscription = async (
@@ -28,7 +28,7 @@ const searchSubscription = async (
     },
 ): Promise<object> => {
     validate(searchSubscriptionSchema, data)
-    return soapHandler(url, ws_url, "searchSubscription", data)
+    return soapClient(url, ws_url, "searchSubscription", data)
 }
 
 export {
