@@ -11,7 +11,12 @@ const port: string | undefined = process.env.EXPRESS_PORT;
 
 app.use(express.json());
 
-const allowedOrigin = ['http://localhost:3000', 'http://localhost:3001', "http://localhost:5173"]
+const allowedOrigin = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:5173',
+    'http://localhost:8888',
+    ]
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true)
