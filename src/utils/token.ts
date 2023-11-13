@@ -4,13 +4,13 @@ import * as crypto from "crypto";
 
 const generateFingerprint = async (numberOfBytes: number): Promise<string> => {
   const randomBytes: Buffer = crypto.randomBytes(numberOfBytes);
-  return randomBytes.toString("utf8");
+  return randomBytes.toString("hex");
 };
 
 const hashFingerprint = async (fgp: string): Promise<string> => {
   const hash: crypto.Hash = crypto.createHash("sha256");
   hash.update(fgp, "utf8");
-  return hash.digest().toString("utf8");
+  return hash.digest("hex");
 };
 
 const generateAccessTokenAndFingerprint = async (data: {
