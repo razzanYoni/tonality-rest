@@ -58,12 +58,12 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     next(); // The token is verified, pass to the next middleware
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      throw new StandardError(ErrorType.ACCESS_TOKEN_EXPIRED);
+      next(new StandardError(ErrorType.ACCESS_TOKEN_EXPIRED));
     } else if (error instanceof NotBeforeError) {
-      throw new StandardError(ErrorType.ACCESS_TOKEN_NOT_ACTIVE);
+      next(new StandardError(ErrorType.ACCESS_TOKEN_NOT_ACTIVE));
     }
-
-    throw error;
+    // unknown error
+    next(error);
   }
 };
 
