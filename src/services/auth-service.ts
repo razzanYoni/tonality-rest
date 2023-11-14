@@ -4,10 +4,14 @@ import prismaClient from "../cores/db";
 import { ErrorType, StandardError } from "../errors/standard-error";
 import { hashPassword, isPasswordValid } from "../utils/password";
 import { generateAccessTokenAndFingerprint } from "../utils/token";
+import {validate} from "../validation/validation";
+import {loginSchema, signupSchema} from "../validation/auth-validation";
 
 const signup = async (
   data: Prisma.UserCreateInput,
 ): Promise<{ userId: number; username: string }> => {
+  validate(signupSchema, data);
+
   // If username already exists throw error
   if (
     (await prismaClient.user.findUnique({
@@ -39,6 +43,8 @@ const signup = async (
 };
 
 const login = async (data: { username: string; password: string }) => {
+  validate(loginSchema, data);
+
   const user = await prismaClient.user.findUnique({
     where: {
       username: data.username,
