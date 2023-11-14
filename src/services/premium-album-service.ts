@@ -1,21 +1,18 @@
-import { PremiumAlbum, Prisma } from "@prisma/client";
+import {PremiumAlbum, Prisma} from "@prisma/client";
 import prismaClient from "../cores/db";
-import { ErrorType, StandardError } from "../errors/standard-error";
+import {ErrorType, StandardError} from "../errors/standard-error";
 import {validate} from "../validation/validation";
-import {createPremiumAlbumSchema, searchPremiumAlbumSchema, deletePremiumAlbumSchema, updatePremiumAlbumSchema} from "../validation/premium-album-validation";
-import { saveFile } from "../utils/FileProcessing";
+import {
+  createPremiumAlbumSchema,
+  deletePremiumAlbumSchema,
+  searchPremiumAlbumSchema,
+  updatePremiumAlbumSchema
+} from "../validation/premium-album-validation";
 
 const createPremiumAlbum = async (
   data: Prisma.PremiumAlbumCreateInput,
-  coverFile: Express.Multer.File | undefined,
 ): Promise<PremiumAlbum> => {
   validate(createPremiumAlbumSchema, data)
-
-  if (!coverFile) {
-    throw new StandardError(ErrorType.FILE_NOT_VALID);
-  }
-
-  const coverFileName = await saveFile(coverFile);
 
   return prismaClient.premiumAlbum.create({
     data: {
@@ -23,7 +20,7 @@ const createPremiumAlbum = async (
       releaseDate: data.releaseDate,
       genre: data.genre,
       artist: data.artist,
-      coverFilename: coverFileName,
+      coverFilename: data.coverFilename,
     },
   });
 };
@@ -83,9 +80,8 @@ const searchPremiumAlbum = async (reqQuery: {
 const updatePremiumAlbum = async (
   inputData: Prisma.PremiumAlbumUpdateInput,
   premiumAlbumId: number,
-  coverFile: Express.Multer.File | undefined,
 ): Promise<PremiumAlbum> => {
-  validate(updatePremiumAlbumSchema, {premiumAlbumId, ...inputData})
+  validate(updatePremiumAlbumSchema, { premiumAlbumId, ...inputData})
 
   const albumCount = await prismaClient.premiumAlbum.count({
     where: {
@@ -96,13 +92,6 @@ const updatePremiumAlbum = async (
   if (albumCount !== 1) {
     throw new StandardError(ErrorType.ALBUM_NOT_FOUND);
   }
-
-  if (!coverFile) {
-    throw new StandardError(ErrorType.INPUT_DATA_NOT_VALID);
-  }
-
-  const coverFileName = await saveFile(coverFile);
-  inputData.coverFilename = coverFileName;
 
   return prismaClient.premiumAlbum.update({
     where: {

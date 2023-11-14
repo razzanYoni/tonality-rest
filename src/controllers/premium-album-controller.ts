@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as PremiumAlbumService from "../services/premium-album-service";
 import { generateResponse } from "../utils/response";
 import { StatusCodes } from "http-status-codes";
+import {ErrorType, StandardError} from "../errors/standard-error";
 
 const createPremiumAlbum = async (
   req: Request,
@@ -10,8 +11,11 @@ const createPremiumAlbum = async (
 ): Promise<void> => {
   try {
     const data = req.body;
-    const coverFile = req.file;
-    const responseData = await PremiumAlbumService.createPremiumAlbum(data, coverFile);
+    if (!req.file) {
+        throw new StandardError(ErrorType.FILE_NOT_VALID);
+    }
+    data.coverFilename = req.file.filename;
+    const responseData = await PremiumAlbumService.createPremiumAlbum(data);
     generateResponse(res, StatusCodes.OK, responseData);
   } catch (err) {
     next(err);
@@ -45,12 +49,18 @@ const updatePremiumAlbum = async (
   try {
     const premiumAlbumId = Number(req.params.premiumAlbumId);
     const data = req.body;
-    const coverFile = req.file;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (req.files && req.files[0]) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+      data.coverFilename = req.files[0].filename;
+    }
 
     const updatedPremiumAlbum = await PremiumAlbumService.updatePremiumAlbum(
       data,
       premiumAlbumId,
-      coverFile
     );
     generateResponse(res, StatusCodes.OK, updatedPremiumAlbum);
   } catch (err) {

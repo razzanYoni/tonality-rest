@@ -2,14 +2,16 @@ import express, { Router } from "express";
 import * as PremiumAlbumController from "../controllers/premium-album-controller";
 import { handleStandardError } from "../middlewares/handle-standard-error";
 import { verifyToken } from "../middlewares/verify-token";
+import {uploadCover} from "../utils/file-processing";
 
 const premiumAlbumRouter: Router = express.Router();
 
 premiumAlbumRouter.post(
   "/api/premium-album",
   verifyToken,
+  uploadCover.single("coverFile"),
   PremiumAlbumController.createPremiumAlbum,
-  handleStandardError,
+  handleStandardError
 );
 
 premiumAlbumRouter.get(
@@ -22,6 +24,7 @@ premiumAlbumRouter.get(
 premiumAlbumRouter.patch(
   "/api/premium-album/:premiumAlbumId",
   verifyToken,
+  uploadCover.any(),
   PremiumAlbumController.updatePremiumAlbum,
   handleStandardError,
 );
