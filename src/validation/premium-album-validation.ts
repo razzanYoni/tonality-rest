@@ -5,7 +5,6 @@ const createPremiumAlbumSchema = z.object({
     releaseDate: z.coerce.date(),
     genre: z.string().min(1).max(255),
     artist: z.string().min(1).max(255),
-    coverFilename: z.string().min(1).max(255),
 });
 
 const searchPremiumAlbumSchema = z.object({
@@ -20,7 +19,6 @@ const updatePremiumAlbumSchema = z.object({
     releaseDate: z.optional(z.coerce.date()),
     genre: z.optional(z.string().min(1).max(255)),
     artist: z.optional(z.string().min(1).max(255)),
-    coverFilename: z.optional(z.string().min(1).max(255)),
 });
 
 const deletePremiumAlbumSchema = z.object({
