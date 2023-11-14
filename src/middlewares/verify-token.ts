@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { NotBeforeError, TokenExpiredError } from "jsonwebtoken";
+import jwt, {JsonWebTokenError, NotBeforeError, TokenExpiredError} from "jsonwebtoken";
 import { ErrorType, StandardError } from "../errors/standard-error";
 import { hashFingerprint } from "../utils/token";
 
@@ -22,26 +22,26 @@ const verifyFingerprint = async (
 };
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
-  // Authorization Bearer ${accessToken}
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
-    throw new StandardError(ErrorType.AUTHORIZATION_HEADER_NOT_SET);
-  }
-
-  const accessToken = authHeader.split(" ")[1];
-
-  if (!accessToken) {
-    throw new StandardError(ErrorType.ACCESS_TOKEN_MISSING);
-  }
-
-  const fingerprint = req.cookies["__Secure-fingerprint"];
-
-  if (!fingerprint) {
-    throw new StandardError(ErrorType.FINGERPRINT_MISSING);
-  }
-
   try {
+  // Authorization Bearer ${accessToken}
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      throw new StandardError(ErrorType.AUTHORIZATION_HEADER_NOT_SET);
+    }
+
+    const accessToken = authHeader.split(" ")[1];
+
+    if (!accessToken) {
+      throw new StandardError(ErrorType.ACCESS_TOKEN_MISSING);
+    }
+
+    const fingerprint = req.cookies["__Secure-fingerprint"];
+
+    if (!fingerprint) {
+      throw new StandardError(ErrorType.FINGERPRINT_MISSING);
+    }
+
     const decodedPayload = jwt.verify(
       accessToken,
       process.env.JWT_SHARED_SECRET as string,
@@ -61,6 +61,10 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
       next(new StandardError(ErrorType.ACCESS_TOKEN_EXPIRED));
     } else if (error instanceof NotBeforeError) {
       next(new StandardError(ErrorType.ACCESS_TOKEN_NOT_ACTIVE));
+    } else if (error instanceof JsonWebTokenError) {
+        next(new StandardError(ErrorType.INVALID_SIGNATURE));
+    } else if (error instanceof StandardError) {
+        next(error);
     }
     // unknown error
     next(error);

@@ -10,6 +10,7 @@ enum ErrorType {
   ACCESS_TOKEN_MISSING,
   ACCESS_TOKEN_EXPIRED,
   ACCESS_TOKEN_NOT_ACTIVE,
+  INVALID_SIGNATURE,
   AUTHORIZATION_HEADER_NOT_SET,
   FINGERPRINT_MISSING,
   ALBUM_NOT_FOUND,
@@ -67,6 +68,11 @@ class StandardError {
 
       case ErrorType.ACCESS_TOKEN_NOT_ACTIVE:
         this.title = "Your access token is not active yet."
+        this.status = StatusCodes.UNAUTHORIZED;
+        break;
+
+      case ErrorType.INVALID_SIGNATURE:
+        this.title = "Your access token is invalid."
         this.status = StatusCodes.UNAUTHORIZED;
         break;
 
