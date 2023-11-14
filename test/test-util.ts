@@ -21,3 +21,11 @@ export const addManyPremiumAlbumTest = async () => {
         });
     }
 };
+
+export const deleteUsersTest = async () => {
+    await prismaClient.user.delete({
+        where: {
+            username: "test",
+        }
+    })
+}

@@ -44,5 +44,7 @@ describe("POST /api/login", () => {
         });
 
         expect(result.status).toEqual(200);
+        expect(result.body.accessToken).toBeDefined();
+        expect(result.header["set-cookie"][0]).toBeDefined();
     });
 });
