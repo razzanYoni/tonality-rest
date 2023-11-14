@@ -9,8 +9,6 @@ dotenv.config();
 export const app: Express = express();
 const port: string | undefined = process.env.EXPRESS_PORT;
 
-app.use(express.json());
-
 const allowedOrigin = [
   'http://localhost:3000',
   'http://localhost:3001',
