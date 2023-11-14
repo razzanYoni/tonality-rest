@@ -26,7 +26,7 @@ const login = async (
   try {
     const accessTokenAndFingerPrint = await AuthService.login(req.body);
     setFingerprintCookie(res, accessTokenAndFingerPrint.fingerprint);
-    generateResponse(res, StatusCodes.OK);
+    generateResponse(res, StatusCodes.OK, { accessToken : accessTokenAndFingerPrint.accessToken });
   } catch (err) {
     next(err);
   }
