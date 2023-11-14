@@ -10,7 +10,8 @@ const createPremiumAlbum = async (
 ): Promise<void> => {
   try {
     const data = req.body;
-    const responseData = await PremiumAlbumService.createPremiumAlbum(data);
+    const coverFile = req.file;
+    const responseData = await PremiumAlbumService.createPremiumAlbum(data, coverFile);
     generateResponse(res, StatusCodes.OK, responseData);
   } catch (err) {
     next(err);
@@ -44,10 +45,12 @@ const updatePremiumAlbum = async (
   try {
     const premiumAlbumId = Number(req.params.premiumAlbumId);
     const data = req.body;
+    const coverFile = req.file;
 
     const updatedPremiumAlbum = await PremiumAlbumService.updatePremiumAlbum(
       data,
       premiumAlbumId,
+      coverFile
     );
     generateResponse(res, StatusCodes.OK, updatedPremiumAlbum);
   } catch (err) {

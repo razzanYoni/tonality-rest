@@ -17,6 +17,7 @@ enum ErrorType {
   SONG_NOT_FOUND,
   INPUT_DATA_NOT_VALID,
   INVALID_API_KEY,
+  FILE_NOT_VALID,
 }
 
 class StandardError {
@@ -104,6 +105,11 @@ class StandardError {
       case ErrorType.INVALID_API_KEY:
         this.title = "Your API key is invalid."
         this.status = StatusCodes.UNAUTHORIZED;
+        break;
+
+      case ErrorType.FILE_NOT_VALID:
+        this.title = "Your File is invalid."
+        this.status = StatusCodes.BAD_REQUEST;
         break;
 
       default:
