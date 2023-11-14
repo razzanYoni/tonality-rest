@@ -73,7 +73,7 @@ const searchPremiumAlbum = async (reqQuery: {
 };
 
 const updatePremiumAlbum = async (
-  inputData: Prisma.PremiumAlbumCreateInput,
+  inputData: Prisma.PremiumAlbumUpdateInput,
   premiumAlbumId: number,
 ): Promise<PremiumAlbum> => {
   validate(updatePremiumAlbumSchema, {premiumAlbumId, ...inputData})
