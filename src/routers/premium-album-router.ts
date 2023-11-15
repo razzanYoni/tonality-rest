@@ -15,7 +15,7 @@ premiumAlbumRouter.post(
 );
 
 premiumAlbumRouter.get(
-  "/api/premium-albums",
+  "/api/premium-album",
   verifyToken,
   PremiumAlbumController.searchPremiumAlbum,
   handleStandardError,
