@@ -6,6 +6,7 @@ import {ErrorType, StandardError} from "../errors/standard-error";
 import phpClient from "../clients/php-client";
 import * as path from "path";
 import {v4 as uuidv4} from 'uuid';
+import saveFile from "../utils/file-processing";
 
 const createPremiumAlbum = async (
   req: Request,
@@ -31,6 +32,7 @@ const createPremiumAlbum = async (
         },
         true
     )
+    await saveFile(req.file, data.coverFilename)
     generateResponse(res, StatusCodes.OK, responseData);
   } catch (err) {
     next(err);
@@ -134,6 +136,9 @@ const updatePremiumAlbum = async (
           },
           true
       )
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      await saveFile(req.files[0], data.coverFilename)
     }
     generateResponse(res, StatusCodes.OK, updatedPremiumAlbum);
   } catch (err) {

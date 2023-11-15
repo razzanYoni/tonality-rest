@@ -6,6 +6,7 @@ import {ErrorType, StandardError} from "../errors/standard-error";
 import phpClient from "../clients/php-client";
 import {v4 as uuidv4} from "uuid";
 import path from "path";
+import saveFile from "../utils/file-processing";
 
 const addNewSong = async (
     req: Request,
@@ -36,6 +37,7 @@ const addNewSong = async (
             },
             true
         )
+        await saveFile(req.file, data.audioFilename)
         generateResponse(res, StatusCodes.OK, responseData);
     } catch (err) {
         next(err);
@@ -101,6 +103,9 @@ const updatePremiumSong = async (
                 },
                 true
             )
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            await saveFile(req.files[0], data.audioFilename)
         }
         generateResponse(res, StatusCodes.OK, responseData);
     } catch (err) {
