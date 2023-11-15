@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import * as PremiumSongController from "../controllers/premium-song-controller";
 import { handleStandardError } from "../middlewares/handle-standard-error";
 import { verifyToken } from "../middlewares/verify-token";
-import {uploadSong} from "../utils/file-processing";
+import {uploadSong} from "../utils/multer";
 
 const premiumSongRouter: Router = express.Router();
 
