@@ -37,6 +37,22 @@ const createPremiumAlbum = async (
   }
 };
 
+const getPremiumAlbumById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const premiumAlbumId = Number(req.params.premiumAlbumId);
+    const responseData = await PremiumAlbumService.getPremiumAlbumById(
+      premiumAlbumId,
+    );
+    generateResponse(res, StatusCodes.OK, responseData);
+  } catch (err) {
+    next(err);
+  }
+}
+
 const searchPremiumAlbum = async (
   req: Request,
   res: Response,
@@ -55,6 +71,29 @@ const searchPremiumAlbum = async (
     next(err);
   }
 };
+
+const searchPremiumAlbumOwned = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> => {
+    try {
+        const allPremiumAlbum = await PremiumAlbumService.searchPremiumAlbumOwned(
+            {
+                size: req.query.size ? Number(req.query.size) : undefined,
+                page: req.query.page ? Number(req.query.page) : undefined,
+                searchQuery: req.query.searchQuery ? String(req.query.searchQuery) : undefined,
+                premiumAlbumIds: JSON.parse(<string>req.query.premiumAlbumIds, (key, value) => {
+                    if (key === "") return value;
+                    return typeof value === "string" ? Number(value) : value;
+                }),
+            },
+        );
+        generateResponse(res, StatusCodes.OK, allPremiumAlbum);
+    } catch (err) {
+        next(err);
+    }
+}
 
 const updatePremiumAlbum = async (
   req: Request,
@@ -120,7 +159,9 @@ const deletePremiumAlbum = async (
 
 export {
   createPremiumAlbum,
+  getPremiumAlbumById,
   searchPremiumAlbum,
+  searchPremiumAlbumOwned,
   updatePremiumAlbum,
   deletePremiumAlbum,
 };
