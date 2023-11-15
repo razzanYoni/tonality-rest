@@ -1,17 +1,7 @@
-import * as path from 'path';
-import {v4 as uuidv4} from 'uuid';
 import multer from "multer";
 
 // https://github.com/expressjs/multer
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./storage/")
-  },
-  filename: function (req, file, cb) {
-    cb(null, uuidv4() + path.extname(file.originalname))
-  }
-})
+const storage = multer.memoryStorage();
 
 const uploadCover = multer({
   storage: storage,

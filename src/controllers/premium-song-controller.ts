@@ -3,6 +3,9 @@ import * as PremiumSongService from "../services/premium-song-services"
 import { generateResponse } from "../utils/response";
 import { StatusCodes } from "http-status-codes";
 import {ErrorType, StandardError} from "../errors/standard-error";
+import phpClient from "../clients/php-client";
+import {v4 as uuidv4} from "uuid";
+import path from "path";
 
 const addNewSong = async (
     req: Request,
@@ -15,13 +18,24 @@ const addNewSong = async (
         if (!req.file) {
             throw new StandardError(ErrorType.FILE_NOT_VALID);
         }
-        data.audioFilename = req.file.filename;
+        data.audioFilename = uuidv4() + path.extname(req.file.originalname);
         data.songNumber = Number(data.songNumber);
         if (data.discNumber) {
             data.discNumber = Number(data.discNumber);
         }
         data.duration = Number(data.duration);
         const responseData = await PremiumSongService.addNewSong(data, premiumAlbumId);
+        await phpClient(
+            process.env.PHP_URL + "upload",
+            "POST",
+            {
+                file : {
+                    filename: data.audioFilename,
+                    buffer: req.file.buffer
+                }
+            },
+            true
+        )
         generateResponse(res, StatusCodes.OK, responseData);
     } catch (err) {
         next(err);
@@ -66,9 +80,28 @@ const updatePremiumSong = async (
         if (req.files && req.files[0]) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            data.audioFilename = req.files[0].filename;
+            data.audioFilename = uuidv4() + path.extname(req.files[0].originalname);
         }
         const responseData = await PremiumSongService.updatePremiumSong(data, premiumAlbumId, premiumSongId);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (req.files && req.files[0]) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            await phpClient(
+                process.env.PHP_URL + "upload",
+                "POST",
+                {
+                    file : {
+                        filename: data.audioFilename,
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        buffer: req.files[0].buffer
+                    }
+                },
+                true
+            )
+        }
         generateResponse(res, StatusCodes.OK, responseData);
     } catch (err) {
         next(err);

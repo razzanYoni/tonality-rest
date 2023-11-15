@@ -9,7 +9,7 @@ const premiumSongRouter: Router = express.Router();
 premiumSongRouter.post(
     "/api/premium-album/:premiumAlbumId",
     verifyToken,
-    uploadSong.single("songFile"),
+    uploadSong.single("audioFile"),
     PremiumSongController.addNewSong,
     handleStandardError,
 );

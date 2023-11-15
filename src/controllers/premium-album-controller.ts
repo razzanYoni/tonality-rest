@@ -3,6 +3,9 @@ import * as PremiumAlbumService from "../services/premium-album-service";
 import { generateResponse } from "../utils/response";
 import { StatusCodes } from "http-status-codes";
 import {ErrorType, StandardError} from "../errors/standard-error";
+import phpClient from "../clients/php-client";
+import * as path from "path";
+import {v4 as uuidv4} from 'uuid';
 
 const createPremiumAlbum = async (
   req: Request,
@@ -14,8 +17,20 @@ const createPremiumAlbum = async (
     if (!req.file) {
         throw new StandardError(ErrorType.FILE_NOT_VALID);
     }
-    data.coverFilename = req.file.filename;
+    // data.coverFilename = req.file.filename;
+    data.coverFilename = uuidv4() + path.extname(req.file.originalname);
     const responseData = await PremiumAlbumService.createPremiumAlbum(data);
+    await phpClient(
+        process.env.PHP_URL + "upload",
+        "POST",
+        {
+          file : {
+            filename: data.coverFilename,
+            buffer: req.file.buffer
+          }
+        },
+        true
+    )
     generateResponse(res, StatusCodes.OK, responseData);
   } catch (err) {
     next(err);
@@ -54,14 +69,33 @@ const updatePremiumAlbum = async (
     // @ts-ignore
     if (req.files && req.files[0]) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-      data.coverFilename = req.files[0].filename;
+      // @ts-ignore
+      data.coverFilename = uuidv4() + path.extname(req.files[0].originalname);
     }
 
     const updatedPremiumAlbum = await PremiumAlbumService.updatePremiumAlbum(
       data,
       premiumAlbumId,
     );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (req.files && req.files[0]) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      await phpClient(
+          process.env.PHP_URL + "upload",
+          "POST",
+          {
+              file : {
+                  filename: data.coverFilename,
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  buffer: req.files[0].buffer
+              }
+          },
+          true
+      )
+    }
     generateResponse(res, StatusCodes.OK, updatedPremiumAlbum);
   } catch (err) {
     next(err);
