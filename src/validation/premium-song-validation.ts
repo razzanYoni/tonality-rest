@@ -10,7 +10,7 @@ const addNewSongSchema = z.object({
 });
 
 const getAllSongFromAlbumSchema = z.object({
-    albumId: z.number().int().min(1),
+    premiumAlbumId: z.number().int().min(1),
 });
 
 const updatePremiumSongSchema = z.object({
@@ -24,7 +24,7 @@ const updatePremiumSongSchema = z.object({
 });
 
 const deletePremiumSongSchema = z.object({
-    albumId: z.number().int().min(1),
+    premiumAlbumId: z.number().int().min(1),
     songId: z.number().int().min(1),
 });
 
