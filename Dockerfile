@@ -1,6 +1,6 @@
 FROM node:18.18.2-alpine
 
-WORKDIR /app
+WORKDIR /tonality/tonality-rest
 
 COPY package*.json .
 
