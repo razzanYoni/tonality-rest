@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import apiRouter from "../routers/api";
+import path from "path";
 
 dotenv.config();
 
@@ -34,6 +35,9 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use(apiRouter);
+
+// app.use(express.static(path.join(__dirname, '..', 'storage')));
+app.use(express.static('storage'));
 
 app.listen(port, () => {
   return console.log(`Express is listening at port ${port}`);
