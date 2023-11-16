@@ -4,8 +4,8 @@ import prismaClient from "../cores/db";
 import { ErrorType, StandardError } from "../errors/standard-error";
 import { hashPassword, isPasswordValid } from "../utils/password";
 import { generateAccessTokenAndFingerprint } from "../utils/token";
-import {validate} from "../validation/validation";
-import {loginSchema, signupSchema} from "../validation/auth-validation";
+import { validate } from "../validation/validation";
+import { loginSchema, signupSchema } from "../validation/auth-validation";
 
 const signup = async (
   data: Prisma.UserCreateInput,
@@ -71,4 +71,22 @@ const login = async (data: { username: string; password: string }) => {
   }
 };
 
-export { signup, login };
+const isUsernameAvailable = async (data: { username: string }) => {
+  const user = await prismaClient.user.findUnique({
+    where: {
+      username: data.username,
+    }
+  })
+
+  if (user !== null) {
+    return {
+      usernameAvailable: "false",
+    }
+  } else {
+    return {
+      usernameAvailable: "true",
+    }
+  }
+}
+
+export { signup, login, isUsernameAvailable };

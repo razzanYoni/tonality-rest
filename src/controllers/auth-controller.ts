@@ -26,7 +26,7 @@ const login = async (
   try {
     const accessTokenAndFingerPrint = await AuthService.login(req.body);
     setFingerprintCookie(res, accessTokenAndFingerPrint.fingerprint);
-    generateResponse(res, StatusCodes.OK, { accessToken : accessTokenAndFingerPrint.accessToken });
+    generateResponse(res, StatusCodes.OK, {accessToken: accessTokenAndFingerPrint.accessToken});
   } catch (err) {
     next(err);
   }
@@ -44,4 +44,17 @@ const setFingerprintCookie = (
   });
 };
 
-export { signup, login };
+const isUsernameAvailable = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const isUsernameAvailable = await AuthService.isUsernameAvailable(req.body);
+    generateResponse(res, StatusCodes.OK, isUsernameAvailable);
+  } catch (err) {
+    next(err)
+  }
+}
+
+export { signup, login, isUsernameAvailable };
