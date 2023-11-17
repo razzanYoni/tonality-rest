@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const addNewSongSchema = z.object({
+const addNewPremiumSongSchema = z.object({
     premiumAlbumId: z.number().int().min(1),
     title: z.string().min(1).max(255),
     artist: z.string().min(1).max(255),
@@ -9,7 +9,11 @@ const addNewSongSchema = z.object({
     duration: z.optional(z.number().int().min(1)),
 });
 
-const getAllSongFromAlbumSchema = z.object({
+const getPremiumSongByIdSchema = z.object({
+    premiumSongId: z.number().int().min(1),
+});
+
+const getAllPremiumSongFromAlbumSchema = z.object({
     premiumAlbumId: z.number().int().min(1),
 });
 
@@ -29,8 +33,9 @@ const deletePremiumSongSchema = z.object({
 });
 
 export {
-    addNewSongSchema,
-    getAllSongFromAlbumSchema,
+    addNewPremiumSongSchema,
+    getPremiumSongByIdSchema,
+    getAllPremiumSongFromAlbumSchema,
     updatePremiumSongSchema,
     deletePremiumSongSchema,
 }

@@ -10,19 +10,26 @@ premiumSongRouter.post(
     "/api/premium-album/:premiumAlbumId",
     verifyToken,
     uploadSong.single("audioFile"),
-    PremiumSongController.addNewSong,
+    PremiumSongController.addNewPremiumSong,
     handleStandardError,
 );
 
 premiumSongRouter.get(
-    "/api/premium-album/:premiumAlbumId",
+  "/api/premium-album/:premiumAlbumId/song/:premiumSongId",
+  verifyToken,
+  PremiumSongController.getPremiumSongById,
+  handleStandardError,
+)
+
+premiumSongRouter.get(
+    "/api/premium-album/:premiumAlbumId/song",
     verifyToken,
-    PremiumSongController.getAllSongFromAlbum,
+    PremiumSongController.getAllPremiumSongFromAlbum,
     handleStandardError,
 );
 
 premiumSongRouter.patch(
-    "/api/premium-album/:premiumAlbumId/:premiumSongId",
+    "/api/premium-album/:premiumAlbumId/song/:premiumSongId",
     verifyToken,
     uploadSong.any(),
     PremiumSongController.updatePremiumSong,
@@ -30,7 +37,7 @@ premiumSongRouter.patch(
 );
 
 premiumSongRouter.delete(
-    "/api/premium-album/:premiumAlbumId/:premiumSongId",
+    "/api/premium-album/:premiumAlbumId/song/:premiumSongId",
     verifyToken,
     PremiumSongController.deletePremiumSong,
     handleStandardError,

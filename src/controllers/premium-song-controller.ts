@@ -8,7 +8,7 @@ import {v4 as uuidv4} from "uuid";
 import path from "path";
 import saveFile from "../utils/file-processing";
 
-const addNewSong = async (
+const addNewPremiumSong = async (
     req: Request,
     res: Response,
     next: NextFunction,
@@ -25,7 +25,7 @@ const addNewSong = async (
             data.discNumber = Number(data.discNumber);
         }
         data.duration = Number(data.duration);
-        const responseData = await PremiumSongService.addNewSong(data, premiumAlbumId);
+        const responseData = await PremiumSongService.addNewPremiumSong(data, premiumAlbumId);
         await phpClient(
             process.env.PHP_URL + "upload",
             "POST",
@@ -44,14 +44,28 @@ const addNewSong = async (
     }
 };
 
-const getAllSongFromAlbum = async (
+const getPremiumSongById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> => {
+    try {
+        const premiumSongId = Number(req.params.premiumSongId);
+        const responseData = await PremiumSongService.getPremiumSongById(premiumSongId);
+        generateResponse(res, StatusCodes.OK, responseData);
+    } catch (err) {
+        next(err);
+    }
+}
+
+const getAllPremiumSongFromAlbum = async (
     req: Request,
     res: Response,
     next: NextFunction,
 ): Promise<void> => {
     try {
         const premiumAlbumId = Number(req.params.premiumAlbumId);
-        const responseData = await PremiumSongService.getAllSongFromAlbum(premiumAlbumId);
+        const responseData = await PremiumSongService.getAllPremiumSongFromAlbum(premiumAlbumId);
         generateResponse(res, StatusCodes.OK, responseData);
     } catch (err) {
         next(err);
@@ -130,8 +144,9 @@ const deletePremiumSong = async (
 
 
 export {
-    addNewSong,
-    getAllSongFromAlbum,
+    addNewPremiumSong,
+    getPremiumSongById,
+    getAllPremiumSongFromAlbum,
     updatePremiumSong,
     deletePremiumSong,
 };

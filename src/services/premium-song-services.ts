@@ -3,15 +3,15 @@ import prismaClient from "../cores/db";
 import { ErrorType, StandardError } from "../errors/standard-error";
 import {validate} from "../validation/validation";
 import {
-    addNewSongSchema, deletePremiumSongSchema,
-    getAllSongFromAlbumSchema, updatePremiumSongSchema
+    addNewPremiumSongSchema, deletePremiumSongSchema,
+    getAllPremiumSongFromAlbumSchema, getPremiumSongByIdSchema, updatePremiumSongSchema
 } from "../validation/premium-song-validation";
 
-const addNewSong = async (
+const addNewPremiumSong = async (
     data: Prisma.PremiumSongCreateInput,
     premiumAlbumId: number
 ): Promise<PremiumSong> => {
-    validate(addNewSongSchema, { premiumAlbumId, ...data});
+    validate(addNewPremiumSongSchema, { premiumAlbumId, ...data});
 
     return prismaClient.premiumSong.create({
         data: {
@@ -26,10 +26,27 @@ const addNewSong = async (
     })
 };
 
-const getAllSongFromAlbum = async (
+const getPremiumSongById = async (
+  premiumSongId: number,
+): Promise<PremiumSong> => {
+    validate(getPremiumSongByIdSchema, { premiumSongId })
+    const premiumSong = await prismaClient.premiumSong.findUnique({
+        where: {
+            songId: premiumSongId
+        }
+    })
+
+    if (!premiumSong) {
+        throw new StandardError(ErrorType.SONG_NOT_FOUND);
+    }
+
+    return premiumSong;
+}
+
+const getAllPremiumSongFromAlbum = async (
     premiumAlbumId: number
 ): Promise<PremiumSong[]> => {
-    validate(getAllSongFromAlbumSchema, { premiumAlbumId })
+    validate(getAllPremiumSongFromAlbumSchema, { premiumAlbumId })
     return prismaClient.premiumSong.findMany({
         where: {
             albumId: premiumAlbumId
@@ -90,8 +107,9 @@ const deletePremiumSong = async (
 };
 
 export {
-    addNewSong,
-    getAllSongFromAlbum,
+    addNewPremiumSong,
+    getPremiumSongById,
+    getAllPremiumSongFromAlbum,
     updatePremiumSong,
     deletePremiumSong,
 };
