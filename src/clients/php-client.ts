@@ -49,8 +49,7 @@ const phpRequest = async (
 }
 
 const phpResponseDataParser = (data : string) : object => {
-    console.log(data)
-    return JSON.parse("{}");
+    return JSON.parse(data);
 }
 
 export default phpClient;

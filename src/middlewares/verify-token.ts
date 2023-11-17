@@ -36,7 +36,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
       throw new StandardError(ErrorType.ACCESS_TOKEN_MISSING);
     }
 
-    const fingerprint = req.cookies["__Secure-fingerprint"];
+    const fingerprint = req.cookies["Secure-fingerprint"];
 
     if (!fingerprint) {
       throw new StandardError(ErrorType.FINGERPRINT_MISSING);

@@ -7,9 +7,9 @@ const updateSubscriptionSchema = z.object({
 });
 
 const searchSubscriptionSchema = z.object({
-    status: z.string().min(1).max(255),
-    searchInput: z.optional(z.string().min(1).max(255)),
-    orderBy: z.optional(z.string().min(1).max(255)),
+    status: z.optional(z.string().min(1).max(255)),
+    searchInput: z.optional(z.string()),
+    orderBy: z.optional(z.string()),
     page: z.number().int().min(1),
     size: z.number().int().min(1),
 });

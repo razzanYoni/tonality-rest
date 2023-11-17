@@ -13,7 +13,7 @@ subscriptionRouter.post(
 );
 
 subscriptionRouter.get(
-    "/api/subscriptions",
+    "/api/subscription",
     verifyToken,
     SubscriptionController.searchSubscription,
     handleStandardError,

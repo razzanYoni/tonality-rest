@@ -24,6 +24,7 @@ const login = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
+    console.log(req.body)
     const accessTokenAndFingerPrint = await AuthService.login(req.body);
     setFingerprintCookie(res, accessTokenAndFingerPrint.fingerprint);
     generateResponse(res, StatusCodes.OK, {accessToken: accessTokenAndFingerPrint.accessToken});
@@ -36,11 +37,10 @@ const setFingerprintCookie = (
   res: Response,
   fingerprint: string,
 ): void => {
-  res.cookie("__Secure-fingerprint", fingerprint, {
+  res.cookie("Secure-fingerprint", fingerprint, {
+    maxAge: 60 * 15 * 1000, // 15 minutes max age (same as access token expiry)
     httpOnly: true,
     secure: true,
-    sameSite: "strict",
-    maxAge: 60 * 15, // 15 minutes max age (same as access token expiry)
   });
 };
 
