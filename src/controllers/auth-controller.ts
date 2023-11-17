@@ -37,8 +37,8 @@ const setFingerprintCookie = (
   res: Response,
   fingerprint: string,
 ): void => {
-  res.cookie("__Secure-fingerprint", fingerprint, {
-    maxAge: 60 * 60, // 60 minutes max age (same as access token expiry)
+  res.cookie("Secure-fingerprint", fingerprint, {
+    maxAge: 60 * 60 * 1000, // 60 minutes max age (same as access token expiry)
     httpOnly: true,
     secure: true,
   });
