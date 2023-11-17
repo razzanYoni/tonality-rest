@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const updateSubscriptionSchema = z.object({
     userId: z.number().int().min(1),
-    albumId: z.number().int().min(1),
+    premiumAlbumId: z.number().int().min(1),
     status: z.string().min(1).max(255),
 });
 

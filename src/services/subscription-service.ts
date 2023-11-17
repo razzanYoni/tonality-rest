@@ -8,7 +8,7 @@ const updateSubscription = async (
     ws_url : string,
     data : {
         userId: number;
-        albumId: number;
+        premiumAlbumId: number;
         status: string;
     },
 ): Promise<object> => {
