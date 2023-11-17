@@ -68,7 +68,7 @@ const deletePremiumSong = async (
     premiumAlbumId: number,
     premiumSongId: number
 ): Promise<PremiumSong> => {
-    validate(deletePremiumSongSchema, { premiumAlbumId })
+    validate(deletePremiumSongSchema, { premiumAlbumId, premiumSongId })
 
     const songCount = await prismaClient.premiumSong.count({
         where: {

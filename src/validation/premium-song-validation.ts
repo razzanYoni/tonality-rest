@@ -25,7 +25,7 @@ const updatePremiumSongSchema = z.object({
 
 const deletePremiumSongSchema = z.object({
     premiumAlbumId: z.number().int().min(1),
-    songId: z.number().int().min(1),
+    premiumSongId: z.number().int().min(1),
 });
 
 export {
