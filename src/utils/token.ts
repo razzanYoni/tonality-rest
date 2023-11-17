@@ -31,7 +31,7 @@ const generateAccessTokenAndFingerprint = async (data: {
         process.env.JWT_SHARED_SECRET as string,
         {
           algorithm: "HS256", // Only use HS256 to generate JWTs
-          expiresIn: "24h", // The token expires after 1 hour
+          expiresIn: "60m", // The token expires 60 minutes
           notBefore: "0ms", // The token is valid right away
           issuer: "Tonality REST Service",
         },
