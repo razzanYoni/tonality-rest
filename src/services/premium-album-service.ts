@@ -4,7 +4,7 @@ import {ErrorType, StandardError} from "../errors/standard-error";
 import {validate} from "../validation/validation";
 import {
   createPremiumAlbumSchema,
-  deletePremiumAlbumSchema, searchPremiumAlbumOwnSchema,
+  deletePremiumAlbumSchema, getPremiumAlbumByIdSchema, searchPremiumAlbumOwnSchema,
   searchPremiumAlbumSchema,
   updatePremiumAlbumSchema
 } from "../validation/premium-album-validation";
@@ -28,13 +28,15 @@ const createPremiumAlbum = async (
 const getPremiumAlbumById = async (
   premiumAlbumId: number,
 ): Promise<{ data: PremiumAlbum, duration: number }> => {
-  const album = await prismaClient.premiumAlbum.findUnique({
+  validate(getPremiumAlbumByIdSchema, { premiumAlbumId })
+
+  const premiumAlbum = await prismaClient.premiumAlbum.findUnique({
     where: {
       albumId: premiumAlbumId,
     },
   });
 
-  if (!album) {
+  if (!premiumAlbum) {
     throw new StandardError(ErrorType.ALBUM_NOT_FOUND);
   }
 
@@ -48,7 +50,7 @@ const getPremiumAlbumById = async (
   })
 
   return {
-    data : album,
+    data : premiumAlbum,
     duration: albumDuration._sum.duration ?? 0
   };
 };

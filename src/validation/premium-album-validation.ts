@@ -7,6 +7,10 @@ const createPremiumAlbumSchema = z.object({
     artist: z.string().min(1).max(255),
 });
 
+const getPremiumAlbumByIdSchema = z.object({
+    premiumAlbumId: z.number().int().min(1),
+});
+
 const searchPremiumAlbumSchema = z.object({
     size: z.optional(z.number().int().min(10).max(100)),
     page: z.optional(z.number().int().min(1)),
@@ -34,6 +38,7 @@ const deletePremiumAlbumSchema = z.object({
 
 export {
     createPremiumAlbumSchema,
+    getPremiumAlbumByIdSchema,
     searchPremiumAlbumSchema,
     searchPremiumAlbumOwnSchema,
     updatePremiumAlbumSchema,
