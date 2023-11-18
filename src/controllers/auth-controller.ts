@@ -3,6 +3,18 @@ import { NextFunction, Request, Response } from "express";
 import { generateResponse } from "../utils/response";
 import { StatusCodes } from "http-status-codes";
 
+const verifyToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    generateResponse(res, StatusCodes.OK, {message: "Token is valid"});
+  } catch (err) {
+    next(err);
+  }
+}
+
 const signup = async (
   req: Request,
   res: Response,
@@ -57,4 +69,4 @@ const isUsernameAvailable = async (
   }
 }
 
-export { signup, login, isUsernameAvailable };
+export { verifyToken, signup, login, isUsernameAvailable };
